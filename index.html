@@ -3,9 +3,204 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Contact Us - Starter Form</title>
+  <style>
+        /* CSS Reset */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box; /* Use border-box model for all elements */
+        }
+
+        html {
+            font-size: 100%; /* Default size for the document font */
+        }
+
+        body {
+            line-height: 1.5; /* Better readability */
+            font-family: Arial, sans-serif; /* Set a default font */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0; /* Remove margin for headings */
+        }
+
+        button {
+            cursor: pointer; /* Change cursor for buttons */
+        }
+
+        /* Application General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #35424a;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            margin: 56px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+          color: white;
+          max-width: 600px;
+          text-align: center;
+          margin: auto;
+          margin-bottom: 20px;
+        }
+
+        h2 {
+            padding-bottom: 5px;
+            color: #02a0dacc;
+            border-bottom: 2px solid #02a0dacc;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: 700;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+          background-color: #02a0dacc;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          padding: 10px 15px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          width: 100%;
+          max-width: 200px;
+          margin-top: 10px;
+          align-self: center;
+        }
+
+        button:hover {
+            background: #01b8fb;
+        }
+
+        #thankYouMessage {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e7f3fe;
+            display: none;
+            border-radius: 8px;
+        }
+
+        #thankYouMessage p {
+          margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+          button {
+              width: 100%;
+              max-width: 100%;
+          }
+
+          .container {
+            max-width: 95%;
+          }
+        }
+  </style>
 </head>
 <body>
+  <header>
+      <h1>Contact Us Form</h1>
+      <p>Demonstration Form Without Input Validation</p>
+  </header>
+  <div class="container">
+      <h2>Get in Touch</h2>
+      <form id="contactForm">
+          <!-- Basic Input Fields without validation -->
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="John Doe"
+            required
+            minlength="3"
+            max="50"
+            pattern=^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$
+            title="Username must be 3 characters"
+            >
 
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="john.doe@example.com"
+            required
+          >
+
+          <label for="phone">Phone:</label>
+          <input
+            type="tel"
+            id="phone"
+            placeholder="123-456-7890"
+            required
+            pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+
+          >
+
+          <label for="message">Message:</label>
+          <textarea id="message" rows="5" placeholder="Write your message here..."></textarea>
+
+          <!-- Submit Button -->
+          <button type="submit" onclick="submitForm()">Submit</button>
+      </form>
+
+      <!-- Thank You Message Section -->
+      <div id="thankYouMessage"></div>
+  </div>
+
+  <script>
+      // Function to handle form submission and display a thank you message
+      function submitForm() {
+          // Get user inputs
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const phone = document.getElementById("phone").value;
+          const message = document.getElementById("message").value;
+
+          // Display Thank You message with user details
+          const thankYouMessage = `<h3>We've Got Mail!</h3>
+                                  <p>Thank you, ${name}! Our team will be in touch soon — stay tuned!</p>
+                                    <p><strong>Name:</strong> ${name}</p>
+                                    <p><strong>Email:</strong> ${email}</p>
+                                    <p><strong>Phone:</strong> ${phone}</p>
+                                    <p><strong>Message:</strong> ${message}</p>`;
+          document.getElementById("thankYouMessage").innerHTML = thankYouMessage;
+          document.getElementById("thankYouMessage").style.display = 'block';
+
+          // Reset form fields
+          document.getElementById("contactForm").reset();
+      }
+  </script>
 </body>
 </html>
