@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import { body, validationResult} from 'express-validator';
 import xss from 'xss';
 import sqlite3 from 'sqlite3';
-import fileURLToPath from 'url';
+import {fileURLToPath} from 'url';
 import {dirname, join} from 'path'
 
 //enable verbose mode in DB
@@ -86,13 +86,14 @@ app.post('/submit',
       })
     }
 
+
     //sanitize the input
     const name = xss(req.body.name)
     const email = xss(req.body.email)
     const phone = xss(req.body.phone)
     const message = xss(req.body.message)
 
-
+    console.log(`Name: ${name}, email: ${email},phone: ${phone},message: ${message},`)
     //perform DB insert
     const sqlInsertQuery = `INSERT INTO message(name, email, phone, message) VALUES(?,?,?,?)`
     db.run(sqlInsertQuery, [name, email,phone, message], function(err){
@@ -110,8 +111,16 @@ app.post('/submit',
       data: { /* this should contain the details of new entry in DB*/}
     })
   }
+);
 
 
+app.get('/', (req, res) => {
+  res.render('index', {
+    errors: {},
+    messages: {}
+  })
+})
 
-
-)
+app.listen(port, ()=> {
+  console.log(`Server is running at port ${port}`)
+})
