@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - EJS Form</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Get in Touch</h2>
+
+        <% if (messages.success) { %>
+            <div class="alert success">
+                <%= messages.success %>
+            </div>
+        <% } %>
+
+        <% if (messages.error) { %>
+            <div class="alert error">
+                <%= messages.error %>
+            </div>
+        <% } %>
+
+        <form id="contactForm" action="/submit" method="POST" novalidate>
+            <div>
+                <label for="name">Name:</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="John Doe"
+                    value="<%= typeof formData !== 'undefined' ? formData.name : '' %>"
+                    required
+                    minlength="3"
+                    maxlength="50"
+                    pattern="[A-Za-z\s\-\'\.]+"
+                    title="Name can contain letters, spaces, hyphens, apostrophes, and periods (e.g., John O'Malley-Smith Jr.)"
+                >
+                <span class="error-message">
+                    <% if (errors && errors.name) { %> <%= errors.name %> <% } %>
+                </span>
+            </div>
+
+            <div>
+                <label for="email">Email:</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="john.doe@example.com"
+                    value="<%= typeof formData !== 'undefined' ? formData.email : '' %>"
+                    required
+                >
+                <span class="error-message">
+                    <% if (errors && errors.email) { %> <%= errors.email %> <% } %>
+                </span>
+            </div>
+
+            <div>
+                <label for="phone">Phone:</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="123-456-7890"
+                    value="<%= typeof formData !== 'undefined' ? formData.phone : '' %>"
+                    pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+                    title="Phone number must be in a valid format (e.g., 123-456-7890, +1 (123) 456-7890)"
+                >
+                <span class="error-message">
+                    <% if (errors && errors.phone) { %> <%= errors.phone %> <% } %>
+                </span>
+            </div>
+
+            <div>
+                <label for="message">Message:</label>
+                <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    placeholder="Write your message here..."
+                    required
+                    minlength="10"
+                    maxlength="500"
+                ><%= typeof formData !== 'undefined' ? formData.message : '' %></textarea>
+                <span class="error-message">
+                    <% if (errors && errors.message) { %> <%= errors.message %> <% } %>
+                </span>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+
+        const form = document.getElementById('contactForm');
+        const inputs = form.querySelectorAll('input, textarea');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+
+                const errorSpan = input.nextElementSibling;
+                if (errorSpan && errorSpan.classList.contains('error-message')) {
+                    errorSpan.textContent = '';
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            input.addEventListener('blur', () => {
+
+                if (!input.checkValidity()) {
+                    input.classList.add('is-invalid');
+                    const errorSpan = input.nextElementSibling;
+                    if (errorSpan) {
+
+                        errorSpan.textContent = input.validationMessage;
+                    }
+                } else {
+                    input.classList.remove('is-invalid');
+                    const errorSpan = input.nextElementSibling;
+                    if (errorSpan) {
+                        errorSpan.textContent = '';
+                    }
+                }
+            });
+        });
+
+
+        form.addEventListener('submit', (event) => {
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                inputs.forEach(input => {
+                    if (!input.checkValidity()) {
+                        input.classList.add('is-invalid');
+                        const errorSpan = input.nextElementSibling;
+                        if (errorSpan) {
+                            errorSpan.textContent = input.validationMessage;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

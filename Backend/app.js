@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import { body, validationResult} from 'express-validator';
 import xss from 'xss';
 import sqlite3 from 'sqlite3';
+import fileURLToPath from 'url';
+import {dirname, join} from 'path'
 
 //enable verbose mode in DB
 const dbVerbose = sqlite3.verbose()
@@ -34,6 +36,14 @@ const db = new dbVerbose.Database('./user_form.db', (err)=> {
 
 const app = express();
 const port = 3000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+//setting EJS and template engine and pointing to views folder
+app.set('view engine', 'ejs');
+app.set('views', join(__dirname, 'views'))
+
 
 // to parse JSON from request body
 app.use(bodyParser.json())
@@ -84,7 +94,7 @@ app.post('/submit',
 
 
     //perform DB insert
-    const sqlInsertQuery = `INSERT INTO message(name, email, phone, message) VALUE(?,?,?,?)`
+    const sqlInsertQuery = `INSERT INTO message(name, email, phone, message) VALUES(?,?,?,?)`
     db.run(sqlInsertQuery, [name, email,phone, message], function(err){
       if(err){
         console.log('Database insertion failed:', err.message);
