@@ -33,12 +33,12 @@ const db = new dbVerbose.Database('./user_form.db', (err)=> {
   }
 })
 
-
 const app = express();
 const port = 3000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 
 //setting EJS and template engine and pointing to views folder
 app.set('view engine', 'ejs');
